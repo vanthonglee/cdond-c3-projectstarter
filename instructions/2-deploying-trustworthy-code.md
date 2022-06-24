@@ -29,7 +29,7 @@ The goal of a build phase is to compile or lint the source code to check for syn
   - Add code to build/compile the back-end.
 - Notice that both jobs have selected a Docker image that is compatible with NodeJS.
 ```
- - image: circleci/node:13.8.0
+ - image: cimg/node:18.4.0
 ```
 - Throughout this project, you should have separate jobs for the front-end and back-end so that failure alerts are more descriptive.
 - Jobs should fail if code cannot be compiled (fail for the right reasons), and **a failed build should stop all future jobs.** 
