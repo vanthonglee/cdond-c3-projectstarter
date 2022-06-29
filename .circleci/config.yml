@@ -135,6 +135,8 @@ jobs:
       - run:
           name: Ensure back-end infrastructure exists
           command: |
+            aws ec2 describe-subnets \
+                --filters "Name=vpc-id,Values=vpc-0787b634dd357a50d"
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
