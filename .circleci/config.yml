@@ -160,8 +160,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/network.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-network-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "udapeople-network-f837b55" \
+              --parameter-overrides ID="f837b55" \
                   EnvironmentName="udapeople"
       - run:
           name: Ensure back-end infrastructure exists
@@ -169,8 +169,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "udapeople-backend-f837b55" \
+              --parameter-overrides ID="f837b55" \
                   EnvironmentName="udapeople"
       - run:
           name: Ensure front-end infrastructure exist
@@ -178,8 +178,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+              --stack-name "udapeople-frontend-f837b55" \
+              --parameter-overrides ID="f837b55"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -192,7 +192,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflow_id: "f837b55"
 
   configure-infrastructure:
     docker:
@@ -227,7 +227,7 @@ jobs:
             # exit 1
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflow_id: "f837b55"
 
   run-migrations:
     docker:
@@ -292,11 +292,11 @@ jobs:
             cd frontend
             npm install
             npm run build
-            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            tar -czvf artifact-"f837b55".tar.gz dist
+            aws s3 cp dist s3://udapeople-f837b55 --recursive
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflow_id: "f837b55"
   # deploy-backend:
   #   docker:
   #     # Docker image here that supports Ansible
@@ -392,8 +392,8 @@ workflows:
                 - master
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
       # - deploy-backend:
