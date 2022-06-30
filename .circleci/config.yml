@@ -255,10 +255,12 @@ jobs:
             # Your code here
             if grep -q "has been executed successfully"  ./backend/migrations_dump.txt   
             then
-              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b55 \
+              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b551 \
+                -H "Authorization: Bearer fKOOXoK5w2A3gy6hLCFa" \
                 -d "1"
             else
-              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b55 \
+              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b551 \
+                -H "Authorization: Bearer fKOOXoK5w2A3gy6hLCFa" \
                 -d "0"
             fi
             # exit 1
