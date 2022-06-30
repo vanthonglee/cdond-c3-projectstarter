@@ -232,7 +232,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: circleci/node:13.8.0
+      - image: sleavely/node-awscli:14.x
     steps:
       # Checkout code from git
       - checkout
@@ -243,10 +243,11 @@ jobs:
           command: |
             # Your code here
             cd backend
-            npm install
-            # Run and save the migration output
+            cat .env
+            npm i
+            npm run build
             npm run migrations > migrations_dump.txt
-            cat migration_output.txt
+            cat migrations_dump.txt
             # exit 1
       - run:
           name: Send migration results to memstash
@@ -266,7 +267,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     steps:
       # Checkout code from git
       - checkout
