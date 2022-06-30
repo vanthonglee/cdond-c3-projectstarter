@@ -354,10 +354,9 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-             BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
-             API_URL="http://${BACKEND_IP}:3030"
-             curl "${API_URL}/api/status"
-            fi
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+            API_URL="http://${BACKEND_IP}:3030"
+            curl "${API_URL}/api/status"
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
       #     workflow_id: "f837b55"
