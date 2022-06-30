@@ -157,9 +157,9 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/network.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-network-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides EnvironmentName="udapeople"
+              --stack-name "udapeople-network-c8dfb40" \
+              --parameter-overrides ID="c8dfb40" \
+                  EnvironmentName="udapeople"
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -167,8 +167,8 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              --parameter-overrides EnvironmentName="udapeople"
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+                  EnvironmentName="udapeople"
       - run:
           name: Ensure front-end infrastructure exist
           command: |
