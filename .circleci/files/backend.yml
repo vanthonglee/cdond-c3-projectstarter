@@ -42,3 +42,5 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
+      SubnetId:
+        Fn::ImportValue: !Sub ${EnvironmentName}-PUB1-SN
