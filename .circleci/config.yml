@@ -92,6 +92,7 @@ jobs:
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
+    parallelism: 10
     steps:
       - checkout
       - restore_cache:
@@ -106,6 +107,7 @@ jobs:
   test-backend:
     docker:
       - image: circleci/node:13.8.0
+    parallelism: 10
     steps:
       - checkout
       - restore_cache:
