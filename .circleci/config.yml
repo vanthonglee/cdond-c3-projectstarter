@@ -226,8 +226,8 @@ jobs:
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
             # exit 1
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "f837b55"
+      # - destroy-environment:
+      #     workflow_id: "f837b55"
 
   run-migrations:
     docker:
@@ -298,8 +298,8 @@ jobs:
             tar -czvf artifact-"f837b55".tar.gz dist
             aws s3 cp dist s3://udapeople-f837b55 --recursive
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "f837b55"
+      # - destroy-environment:
+      #     workflow_id: "f837b55"
 
   deploy-backend:
     docker:
@@ -336,8 +336,8 @@ jobs:
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "f837b55"
+      # - destroy-environment:
+      #     workflow_id: "f837b55"
 
   smoke-test-backend:
     docker:
@@ -369,8 +369,8 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "f837b55"
+      # - destroy-environment:
+      #     workflow_id: "f837b55"
 
   smoke-test-frontend:
     docker:
@@ -397,8 +397,8 @@ jobs:
               exit 1
             fi
       # Here's where you will add some code to rollback on failure
-      - destroy-environment:
-          workflow_id: "f837b55"
+      # - destroy-environment:
+      #     workflow_id: "f837b55"
 
   # cloudfront-update:
   #   docker:
