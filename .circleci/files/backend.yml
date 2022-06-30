@@ -37,7 +37,8 @@ Resources:
       # Ubuntu 18 or higher works fine
       ImageId: ami-08d4ac5b634553e16
       InstanceType: t2.micro
-      SecurityGroupIds: !GetAtt InstanceSecurityGroup
+      SecurityGroupIds:
+        - !GetAtt "InstanceSecurityGroup.GroupId"
       KeyName: udacity # If you use another key pair name, you should change this value to match.
       Tags:
         - Key: Name
