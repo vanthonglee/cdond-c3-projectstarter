@@ -6,6 +6,11 @@ Parameters:
     Description: Unique identifier.
     Type: String
 
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+    Default: UdagramApp
+
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
