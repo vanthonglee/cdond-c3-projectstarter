@@ -11,6 +11,8 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: !Sub UdaPeople-${ID}
+      VpcId:
+        Fn::ImportValue: !Sub "${EnvironmentName}-VPCID"
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
