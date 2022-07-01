@@ -21,6 +21,11 @@
 #     state: latest
 #     update_cache: yes
 
+- name: "Add nodejs 13.x ppa for apt repo"
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_13.x bionic main
+    update_cache: yes
+
 - name: "install n"
   become: true
   npm:
