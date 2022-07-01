@@ -356,7 +356,7 @@ jobs:
           command: |
             pwd
             cd backend
-            node --ersion
+            node --version
             npm i
             npm run build
             cd ..
