@@ -348,10 +348,8 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
       - run:
-          name: install node modules
+          name: Deploy backend
           command: |
-            cd /root/project/backend
-            npm install
             ls /root
             ls /root/project/backend/
             cat ~/project/.circleci/ansible/inventory.txt
