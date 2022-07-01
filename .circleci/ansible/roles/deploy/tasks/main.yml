@@ -11,14 +11,14 @@
 - name: "move files to server"
   become: true
   synchronize:
-    src: /root/project/backend/dist
+    src: /project/backend/dist
     dest: ./udapeople
     recursive: true
 
 - name: "move node modules"
   become: true
   synchronize:
-    src: /root/project/backend/node_modules
+    src: /project/backend/node_modules
     dest: ./udapeople
     recursive: true
 
