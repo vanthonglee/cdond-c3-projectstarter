@@ -333,6 +333,7 @@ jobs:
             apk upgrade
             apk add unzip 
             apk add curl
+            pip3 install awscli
             /usr/local/bin/python -m pip install --upgrade pip
       - run:
           name: Add back-end ip to ansible inventory
