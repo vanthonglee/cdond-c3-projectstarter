@@ -255,8 +255,7 @@ jobs:
                 -H "Authorization: Bearer JfllcG29BTMb3UGa39d5DhKwC19E6nsJxjAc6bUi" \
                 -d "1"
             else
-              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_${CIRCLE_WORKFLOW_ID:0:7}
-               \
+              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_${CIRCLE_WORKFLOW_ID:0:7} \
                 -H "Authorization: Bearer JfllcG29BTMb3UGa39d5DhKwC19E6nsJxjAc6bUi" \
                 -d "0"
             fi
