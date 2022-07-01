@@ -9,12 +9,17 @@
   apt:
     upgrade: "yes"
 
-- name: "install dependencies."
+- name: remove dependencies that are no longer required
   become: true
   apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+    autoremove: yes
+
+# - name: "install dependencies."
+#   become: true
+#   apt:
+#     name: ["nodejs", "npm"]
+#     state: latest
+#     update_cache: yes
 
 - name: "install n"
   become: true
@@ -23,9 +28,9 @@
     global: yes
     production: yes
 
-- name: "install nodejs 12.20.1"
+- name: "install nodejs node:13.14.0"
   become: true
-  shell: n 12.20.1
+  shell: n node:13.14.0
 
 - name: "install pm2"
   become: true
