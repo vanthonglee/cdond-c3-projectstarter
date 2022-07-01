@@ -328,9 +328,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible rsync 
+            # Your code here
+            apk update
+            apk upgrade
+            apk add unzip 
             apk add curl
-            pip3 install awscli
+            /usr/local/bin/python -m pip install --upgrade pip
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -355,13 +358,45 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
 
             cat backend/.env
+
+      - run:
+          name: Install node
+          command: |
+            apk add --update nodejs nodejs-npm
+            node --version
+            npm --version
+      - run:
+          name: Install ansible
+          command: |
+            # your code here              
+            apk add --update ansible 
+            ansible --version
+      - run:
+          name: Install aws
+          command: |
+            pip install awscli --upgrade   
+            aws --version
       - run:
           name: Deploy backend
           command: |
-            ls /root
-            ls /root/project/backend/
-            cat ~/project/.circleci/ansible/inventory.txt
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
+            # your code here
+            echo "cd backend -------"
+            cd backend
+            echo "npm install -------"
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            echo "zip the directory -------"
+            tar -C backend -czvf artifact.tar.gz .
+            echo "mv artifac to ansibble -------"
+            mv artifact.tar.gz .circleci/ansible/
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+          environment:
+            ANSIBLE_HOST_KEY_CHECKING: false
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
       #     workflow_id: "aacd4b0"
