@@ -333,15 +333,8 @@ jobs:
             apk upgrade
             apk add unzip 
             apk add curl
-            pip3 install awscli
             /usr/local/bin/python -m pip install --upgrade pip
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
-            aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udapeople" \
-              --output text >> .circleci/ansible/inventory.txt
+
       - run:
           name: create .env files
           command: |
@@ -377,6 +370,13 @@ jobs:
           command: |
             pip install awscli --upgrade   
             aws --version
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople" \
+              --output text >> .circleci/ansible/inventory.txt
       - run:
           name: Deploy backend
           command: |
