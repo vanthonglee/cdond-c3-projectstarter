@@ -313,7 +313,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.16
+      - image: cimg/node:13.14.0
 
     steps:
       # Checkout code from git
@@ -325,15 +325,7 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            apk update
-            apk upgrade
-            apk add unzip 
-            apk add curl
-            /usr/local/bin/python -m pip install --upgrade pip
+      - install-dependencies
 
       - run:
           name: create .env files
