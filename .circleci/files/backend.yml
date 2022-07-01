@@ -39,7 +39,7 @@ Resources:
       InstanceType: t2.micro
       SecurityGroupIds:
         - !GetAtt "InstanceSecurityGroup.GroupId"
-      KeyName: udacity # If you use another key pair name, you should change this value to match.
+      KeyName: Udacity-Lab-3 # If you use another key pair name, you should change this value to match.
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}

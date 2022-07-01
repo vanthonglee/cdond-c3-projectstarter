@@ -58,7 +58,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     steps:
       - checkout
       - restore_cache:
@@ -75,7 +75,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     steps:
       - checkout
       - restore_cache:
@@ -92,7 +92,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     parallelism: 10
     steps:
       - checkout
@@ -107,7 +107,7 @@ jobs:
 
   test-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     parallelism: 10
     steps:
       - checkout
@@ -122,7 +122,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     steps:
       - checkout
       - restore_cache:
@@ -136,7 +136,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.14.0
     steps:
       - checkout
       - restore_cache:
@@ -160,8 +160,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/network.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-network-f837b55" \
-              --parameter-overrides ID="f837b55" \
+              --stack-name "udapeople-network-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
                   EnvironmentName="udapeople"
       - run:
           name: Ensure back-end infrastructure exists
@@ -169,8 +169,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-backend-f837b55" \
-              --parameter-overrides ID="f837b55" \
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
                   EnvironmentName="udapeople"
       - run:
           name: Ensure front-end infrastructure exist
@@ -178,8 +178,8 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
-              --stack-name "udapeople-frontend-f837b55" \
-              --parameter-overrides ID="f837b55"
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -192,7 +192,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
-          workflow_id: "f837b55"
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   configure-infrastructure:
     docker:
@@ -227,7 +227,7 @@ jobs:
             # exit 1
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
-      #     workflow_id: "f837b55"
+      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   run-migrations:
     docker:
@@ -253,11 +253,12 @@ jobs:
             # Your code here
             if grep -q "has been executed successfully"  ./backend/migrations_dump.txt   
             then
-              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b551 \
+              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_${CIRCLE_WORKFLOW_ID:0:7} \
                 -H "Authorization: Bearer fKOOXoK5w2A3gy6hLCFa" \
                 -d "1"
             else
-              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_f837b551 \
+              curl https://kvdb.io/NTAdnoFKXoQqwu552aiLSM//migration_${CIRCLE_WORKFLOW_ID:0:7}
+               \
                 -H "Authorization: Bearer fKOOXoK5w2A3gy6hLCFa" \
                 -d "0"
             fi
@@ -295,11 +296,11 @@ jobs:
             cd frontend
             npm install
             npm run build
-            tar -czvf artifact-"f837b55".tar.gz dist
-            aws s3 cp dist s3://udapeople-f837b55 --recursive
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
-      #     workflow_id: "f837b55"
+      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   deploy-backend:
     docker:
@@ -337,7 +338,7 @@ jobs:
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
-      #     workflow_id: "f837b55"
+      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   smoke-test-backend:
     docker:
@@ -359,7 +360,7 @@ jobs:
             curl "${API_URL}/api/status"
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
-      #     workflow_id: "f837b55"
+      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   smoke-test-frontend:
     docker:
@@ -376,7 +377,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-f837b55.s3-website-us-east-1.amazonaws.com/#/employees"            
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
@@ -387,7 +388,7 @@ jobs:
             fi
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
-      #     workflow_id: "f837b55"
+      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   # cloudfront-update:
   #   docker:
