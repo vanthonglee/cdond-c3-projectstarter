@@ -344,24 +344,6 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
 
             cat backend/.env
-
-      - run:
-          name: Install node
-          command: |
-            apk add --update nodejs nodejs-npm
-            node --version
-            npm --version
-      - run:
-          name: Install ansible
-          command: |
-            # your code here              
-            apk add --update ansible 
-            ansible --version
-      - run:
-          name: Install aws
-          command: |
-            pip install awscli --upgrade   
-            aws --version
       - run:
           name: Add back-end ip to ansible inventory
           command: |
