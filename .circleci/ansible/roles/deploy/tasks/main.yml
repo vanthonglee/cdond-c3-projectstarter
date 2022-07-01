@@ -1,30 +1,40 @@
 ---
-- name: "unarchive backend files"
-  unarchive:
-    dest: /home/ubuntu/
-    src: backend.tar.gz
-
-- name: "upgrade packages."
+- name: install rsync on the ansible controller
   become: true
-  apt:
-    upgrade: "yes"
+  connection: local
+  package:
+    name:
+      - openssh
+      - rsync
+    state: present
 
-#- name: "install dependencies."
-# become: true
-#apt:
-# name: ["nodejs", "npm"]
-#update_cache: yes
+- name: "move files to server"
+  become: true
+  synchronize:
+    src: /root/project/backend/dist
+    dest: ./udapeople
+    recursive: true
 
-#- name: "install pm2"
-# become: true
-#npm:
-# name: pm2
-#global: yes
-#production: yes
-#state: present
+- name: "move node modules"
+  become: true
+  synchronize:
+    src: /root/project/backend/node_modules
+    dest: ./udapeople
+    recursive: true
 
-- name: Start PM2
-  shell: |
-    cd ~/backend
-    pm2 start npm --name backend -- start
-    #pm2 start npm -i 1 --name backend -- start
+- name: "run server"
+  become: true
+  command: pm2 start -f ./main.js
+  args:
+    chdir: ./udapeople/dist
+  environment:
+    ENVIRONMENT: production
+    TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
+    TYPEORM_MIGRATIONS_DIR: "./migrations"
+    TYPEORM_MIGRATIONS: "./migrations/*.js"
+    TYPEORM_ENTITIES: "./modules/domain/**/*.entity.js"
+    TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
+    TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
+    TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+    TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+    TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"

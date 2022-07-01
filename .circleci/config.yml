@@ -328,9 +328,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update tar gzip ansible curl zip
-            wget https://nodejs.org/download/release/v13.14.0/node-v13.14.0-linux-x64.tar.xz && tar -xf node-v13.14.0-linux-x64.tar.xz
-            pip install awscli
+            apk add --update ansible rsync 
+            apk add curl
+            pip3 install awscli
 
       - run:
           name: create .env files
@@ -352,44 +352,10 @@ jobs:
           command: |
             cd /root/project/backend
             npm install
-      - run:
-          name: zip backend files
-          command: |
-            pwd
-            cd backend
-            node --version
-            npm i
-            npm run build
-            cd ..
-            pwd
-            tar czf backend.tar.gz backend
-            ls -l 
-            cd .circleci/ansible/roles/deploy
-            mkdir files
-            #sudo chmod 777 files
-            cd /root/project/
-            cp backend.tar.gz .circleci/ansible/roles/deploy/files/
-            ls -l
-            #mv backend.tar.gz /home/ubuntu
-            #cd /home/ubuntu
-            #ls -l
-            #cp backend.tar.gz /home/ubuntu
-            #cp backend.tar.gz ~/
-      - run:
-          name: Deploy backend
-          command: |
-            # your code here
-            cd .circleci/ansible
-            backendip=$(aws ec2 describe-instances \
-              --query "Reservations[*].Instances[*].PublicIpAddress" \
-              --filters "Name=tag:project,Values=udapeople" \
-              --output=text)
-            ls -l -a
-            #echo $backendip >> .circleci/ansible/inventory.txt
-            echo $backendip >> inventory.txt
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            ls /root
+            ls /root/project/backend/
+            cat ~/project/.circleci/ansible/inventory.txt
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       # - destroy-environment:
       #     workflow_id: "aacd4b0"
