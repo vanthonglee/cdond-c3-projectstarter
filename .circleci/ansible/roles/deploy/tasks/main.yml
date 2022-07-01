@@ -1,29 +1,30 @@
 ---
-- name: Copy files
+- name: "unarchive backend files"
+  unarchive:
+    dest: /home/ubuntu/
+    src: backend.tar.gz
+
+- name: "upgrade packages."
   become: true
-  copy:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/artifact.tar.gz
-- name: Unarchive
-  become: true
+  apt:
+    upgrade: "yes"
+
+#- name: "install dependencies."
+# become: true
+#apt:
+# name: ["nodejs", "npm"]
+#update_cache: yes
+
+#- name: "install pm2"
+# become: true
+#npm:
+# name: pm2
+#global: yes
+#production: yes
+#state: present
+
+- name: Start PM2
   shell: |
-    cd /home/ubuntu/
-    tar xvzf artifact.tar.gz -C .
-- name: "run server"
-  become: true
-  shell: |
-    cd /home/ubuntu/
-    npm install
-    pm2 stop default
-    pm2 start npm -- start
-  environment:
-    ENVIRONMENT: production
-    TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
-    TYPEORM_MIGRATIONS_DIR: "./migrations"
-    TYPEORM_MIGRATIONS: "./migrations/*.js"
-    TYPEORM_ENTITIES: "./modules/domain/**/*.entity.js"
-    TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
-    TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
-    TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
-    TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
-    TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
+    cd ~/backend
+    pm2 start npm --name backend -- start
+    #pm2 start npm -i 1 --name backend -- start
