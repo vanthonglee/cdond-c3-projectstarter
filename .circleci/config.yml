@@ -330,7 +330,6 @@ jobs:
           command: |
             apk add --update tar gzip ansible nodejs npm curl zip
             pip install awscli
-            npm install
 
       - run:
           name: create .env files
