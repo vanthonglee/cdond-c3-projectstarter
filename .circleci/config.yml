@@ -15,6 +15,8 @@ commands:
               --stack-name "udapeople-frontend-<< parameters.workflow_id >>"
             aws cloudformation delete-stack \
               --stack-name "udapeople-backend-<< parameters.workflow_id >>"
+            aws cloudformation delete-stack \
+              --stack-name "udapeople-cloudfront-<< parameters.workflow_id >>"  
             aws s3 rm "s3://udapeople-<< parameters.workflow_id >>" --recursive
   install-dependencies:
     steps:
@@ -502,6 +504,10 @@ jobs:
             else
               echo "Fresh New Stacks"
             fi
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 workflows:
   default:
     jobs:
