@@ -228,8 +228,8 @@ jobs:
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
             # exit 1
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment:
-      #     workflow_id: "aacd4b0"
+      - destroy-environment:
+          workflow_id: "aacd4b0"
 
   run-migrations:
     docker:
@@ -265,6 +265,8 @@ jobs:
             fi
             # exit 1
       # Here's where you will add some code to rollback on failure
+      - revert-migrations:
+          workflow_id: "aacd4b0"
 
   deploy-frontend:
     docker:
@@ -307,8 +309,8 @@ jobs:
             tar -czvf artifact-"aacd4b0".tar.gz dist
             aws s3 cp dist s3://udapeople-aacd4b0 --recursive
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment:
-      #     workflow_id: "aacd4b0"
+      - destroy-environment:
+          workflow_id: "aacd4b0"
 
   deploy-backend:
     docker:
@@ -344,13 +346,7 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
 
             cat backend/.env
-      # - run:
-      #     name: Add back-end ip to ansible inventory
-      #     command: |
-      #       aws ec2 describe-instances \
-      #         --query 'Reservations[*].Instances[*].PublicIpAddress' \
-      #         --filters "Name=tag:project,Values=udapeople" \
-      #         --output text >> .circleci/ansible/inventory.txt
+
       - run:
           name: Deploy backend
           command: |
@@ -373,8 +369,8 @@ jobs:
           environment:
             ANSIBLE_HOST_KEY_CHECKING: false
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment:
-      #     workflow_id: "aacd4b0"
+      - destroy-environment:
+          workflow_id: "aacd4b0"
 
   smoke-test-backend:
     docker:
@@ -393,12 +389,13 @@ jobs:
           command: |
             BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
             API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
             curl "${API_URL}/api/status"
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment:
-      #     workflow_id: "aacd4b0"
-      # - revert-migrations:
-      #     workflow_id: "aacd4b0"
+      - destroy-environment:
+          workflow_id: "aacd4b0"
+      - revert-migrations:
+          workflow_id: "aacd4b0"
 
   smoke-test-frontend:
     docker:
@@ -425,10 +422,10 @@ jobs:
               exit 1
             fi
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment:
-      #     workflow_id: "aacd4b0"
-      # - revert-migrations:
-      #     workflow_id: "aacd4b0"
+      - destroy-environment:
+          workflow_id: "aacd4b0"
+      - revert-migrations:
+          workflow_id: "aacd4b0"
   # cloudfront-update:
   #   docker:
   #     # Docker image here that supports AWS CLI
