@@ -18,6 +18,8 @@ commands:
             aws cloudformation delete-stack \
               --stack-name "udapeople-cloudfront-<< parameters.workflow_id >>"  
             aws s3 rm "s3://udapeople-<< parameters.workflow_id >>" --recursive
+            aws cloudformation delete-stack \
+              --stack-name "udapeople-network-<< parameters.workflow_id >>"
   install-dependencies:
     steps:
       - run:
