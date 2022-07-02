@@ -417,7 +417,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
                 # Change this to 0 after the job fails
-              exit 1
+              exit 0
             else
               exit 1
             fi
@@ -528,8 +528,8 @@ workflows:
       - smoke-test-backend:
           requires: [deploy-backend]
       - smoke-test-frontend:
-          requires: [deploy-backend, deploy-frontend]
+          requires: [deploy-frontend]
       - cloudfront-update:
-          requires: [smoke-test]
+          requires: [smoke-test-frontend]
       - cleanup:
           requires: [cloudfront-update]
