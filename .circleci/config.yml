@@ -12,7 +12,7 @@ commands:
           when: on_fail
           command: |
             aws s3 rm "s3://udapeople-<< parameters.workflow_id >>" --recursive \
-            aws s3 rb s3://udapeople-<< parameters.workflow_id >>" --force \
+            aws s3 rb "s3://udapeople-<< parameters.workflow_id >>" --force \
             aws cloudformation delete-stack \
               --stack-name "udapeople-frontend-<< parameters.workflow_id >>"
             aws cloudformation delete-stack \
