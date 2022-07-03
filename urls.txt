@@ -1,0 +1,10 @@
+1. Public Url to GitHub repository (not private) [URL01]
+https://github.com/vanthonglee/cdond-c3-projectstarter
+2. Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
+http://udapeople-93e5819.s3-website-us-east-1.amazonaws.com/
+
+3. Public URL for prometheus server
+http://ec2-52-90-50-93.compute-1.amazonaws.com:9093
+
+4. All screenshots, urls, presentation file are all stored in Notion
+https://able-manuscript-d3f.notion.site/Udacity-Project-3-Give-Your-Application-Auto-Deploy-Superpowers-0d60ef990c2347da9cf802473ac1cff0
